@@ -401,11 +401,14 @@
     <script src="update-menu.js"></script>
     <script>
         let menuData = {};
+        let menuUpdater = null;
 
         // Sayfa yüklendiğinde menü verilerini yükle
-        document.addEventListener('DOMContentLoaded', function() {
-            loadMenuData();
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadMenuData();
             loadGitHubSettings();
+            // MenuUpdater instance'ını oluştur
+            menuUpdater = new MenuUpdater(menuData);
         });
 
         // Menü verilerini yükle
@@ -414,6 +417,10 @@
                 const response = await fetch('menu-data.json');
                 menuData = await response.json();
                 renderMenu();
+                // MenuUpdater'ı güncelle
+                if (menuUpdater) {
+                    menuUpdater.menuData = menuData;
+                }
             } catch (error) {
                 showStatus('Menü verileri yüklenirken hata oluştu!', 'error');
             }

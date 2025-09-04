@@ -1,8 +1,10 @@
 // GitHub Pages için JavaScript tabanlı menü güncelleme sistemi
 class MenuUpdater {
-    constructor() {
-        this.menuData = {};
-        this.loadMenuData();
+    constructor(menuData = null) {
+        this.menuData = menuData || {};
+        if (!menuData) {
+            this.loadMenuData();
+        }
     }
 
     // Menü verilerini yükle
