@@ -175,6 +175,28 @@ class MenuUpdater {
 
     // index.html içeriğini oluştur
     generateIndexHTML() {
+        // Dinamik tab'ları oluştur
+        const tabs = this.menuData.categories.map(category => `
+            <div class="tab" onclick="showCategory('${category.id}')">
+                <img src="${category.icon}" alt="${category.name}" class="tab-image">
+                <div class="tab-title">${category.name}</div>
+            </div>
+        `).join('');
+
+        // Dinamik kategori bölümlerini oluştur
+        const categorySections = this.menuData.categories.map((category, index) => {
+            const isActive = index === 0 ? 'active' : '';
+            const subcategories = category.subcategories.map(subcategory => 
+                this.generateSubcategory(subcategory.name, subcategory.items)
+            ).join('');
+            
+            return `
+                <div id="${category.id}" class="category-section ${isActive}">
+                    ${subcategories}
+                </div>
+            `;
+        }).join('');
+
         return `<!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -267,6 +289,7 @@ class MenuUpdater {
             padding: 20px 10px;
             background: #f8f9fa;
             border-bottom: 1px solid #e9ecef;
+            flex-wrap: wrap;
         }
 
         .tab {
@@ -278,6 +301,7 @@ class MenuUpdater {
             padding: 10px;
             border-radius: 15px;
             min-width: 80px;
+            margin: 5px;
         }
 
         .tab:hover {
@@ -448,39 +472,11 @@ class MenuUpdater {
         </div>
 
         <div class="tabs">
-            <div class="tab active" onclick="showCategory('icecekler')">
-                <img src="images/icecekler.png" alt="İçecekler" class="tab-image">
-                <div class="tab-title">İçecekler</div>
-            </div>
-            <div class="tab" onclick="showCategory('tatlilar')">
-                <img src="images/tatlilar.png" alt="Tatlılar" class="tab-image">
-                <div class="tab-title">Tatlılar</div>
-            </div>
-            <div class="tab" onclick="showCategory('extralar')">
-                <img src="images/extralar.jpg" alt="Extralar" class="tab-image">
-                <div class="tab-title">Extralar</div>
-            </div>
+            ${tabs}
         </div>
 
         <div class="content">
-            <!-- İçecekler Kategorisi -->
-            <div id="icecekler" class="category-section active">
-                ${this.generateSubcategory('Soğuk İçecekler', this.menuData.icecekler.soguk)}
-                ${this.generateSubcategory('Sıcak İçecekler', this.menuData.icecekler.sicak)}
-                ${this.generateSubcategory('Sıcak Special İçecekler', this.menuData.icecekler.sicak_special)}
-                ${this.generateSubcategory('Soğuk Special İçecekler', this.menuData.icecekler.soguk_special)}
-                ${this.generateSubcategory('Bitki Çayları', this.menuData.icecekler.bitki_caylari)}
-            </div>
-
-            <!-- Tatlılar Kategorisi -->
-            <div id="tatlilar" class="category-section">
-                ${this.generateSubcategory('Tatlılar', this.menuData.tatlilar)}
-            </div>
-
-            <!-- Extralar Kategorisi -->
-            <div id="extralar" class="category-section">
-                ${this.generateSubcategory('Extralar', this.menuData.extralar)}
-            </div>
+            ${categorySections}
         </div>
     </div>
 
@@ -499,23 +495,26 @@ class MenuUpdater {
             document.getElementById(categoryId).classList.add('active');
             event.currentTarget.classList.add('active');
 
-            if (categoryId === 'icecekler') {
-                const iceceklerSubcategories = document.querySelectorAll('#icecekler .subcategory-content');
-                iceceklerSubcategories.forEach(subcategory => {
+            // İlk kategori (genellikle içecekler) için accordion'ları kapat
+            const firstCategory = document.querySelector('.category-section.active');
+            if (firstCategory && firstCategory.id === 'icecekler') {
+                const subcategories = firstCategory.querySelectorAll('.subcategory-content');
+                subcategories.forEach(subcategory => {
                     subcategory.classList.remove('open');
                 });
                 
-                const iceceklerArrows = document.querySelectorAll('#icecekler .subcategory-arrow');
-                iceceklerArrows.forEach(arrow => {
+                const arrows = firstCategory.querySelectorAll('.subcategory-arrow');
+                arrows.forEach(arrow => {
                     arrow.classList.remove('rotated');
                 });
             } else {
-                const currentSubcategories = document.querySelectorAll(\`#\${categoryId} .subcategory-content\`);
+                // Diğer kategoriler için accordion'ları aç
+                const currentSubcategories = firstCategory.querySelectorAll('.subcategory-content');
                 currentSubcategories.forEach(subcategory => {
                     subcategory.classList.add('open');
                 });
                 
-                const currentArrows = document.querySelectorAll(\`#\${categoryId} .subcategory-arrow\`);
+                const currentArrows = firstCategory.querySelectorAll('.subcategory-arrow');
                 currentArrows.forEach(arrow => {
                     arrow.classList.add('rotated');
                 });
@@ -536,15 +535,25 @@ class MenuUpdater {
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const iceceklerSubcategories = document.querySelectorAll('#icecekler .subcategory-content');
-            iceceklerSubcategories.forEach(subcategory => {
-                subcategory.classList.remove('open');
-            });
+            // İlk kategoriyi aktif yap
+            const firstTab = document.querySelector('.tab');
+            if (firstTab) {
+                firstTab.classList.add('active');
+            }
             
-            const iceceklerArrows = document.querySelectorAll('#icecekler .subcategory-arrow');
-            iceceklerArrows.forEach(arrow => {
-                arrow.classList.remove('rotated');
-            });
+            // İlk kategori accordion'larını kapat
+            const firstCategory = document.querySelector('.category-section.active');
+            if (firstCategory) {
+                const subcategories = firstCategory.querySelectorAll('.subcategory-content');
+                subcategories.forEach(subcategory => {
+                    subcategory.classList.remove('open');
+                });
+                
+                const arrows = firstCategory.querySelectorAll('.subcategory-arrow');
+                arrows.forEach(arrow => {
+                    arrow.classList.remove('rotated');
+                });
+            }
         });
     </script>
 </body>

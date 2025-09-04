@@ -1,90 +1,139 @@
 {
-  "icecekler": {
-    "soguk": [
-      {"name": "Ice Latte", "price": "125₺"},
-      {"name": "Ice Raspberry Latte", "price": "135₺"},
-      {"name": "Ice Mocha", "price": "135₺"},
-      {"name": "Ice Caramel Macchiato", "price": "135₺"},
-      {"name": "Ice Toffee Nut Latte", "price": "135₺"},
-      {"name": "Ice White Chocolate Mocha", "price": "135₺"},
-      {"name": "Ice Flat White", "price": "130₺"},
-      {"name": "Ice Americano", "price": "125₺"},
-      {"name": "Ice Coconut Latte", "price": "135₺"},
-      {"name": "Frappucino", "price": "140₺"}
-    ],
-    "sicak": [
-      {"name": "Latte", "price": "90₺"},
-      {"name": "Mocha", "price": "110₺"},
-      {"name": "Caramel Macchiato", "price": "110₺"},
-      {"name": "Toffee Nut Latte", "price": "110₺"},
-      {"name": "White Chocolate Mocha", "price": "110₺"},
-      {"name": "Cappuccino", "price": "100₺"},
-      {"name": "Flat White", "price": "110₺"},
-      {"name": "Americano", "price": "110₺"},
-      {"name": "Cortado", "price": "100₺"}
-    ],
-    "sicak_special": [
-      {"name": "Pumpkin Spice Latte", "price": "125₺"},
-      {"name": "Süt Reçelli Latte", "price": "125₺"},
-      {"name": "Fındık Çikolata Latte", "price": "125₺"},
-      {"name": "Lotus Latte", "price": "125₺"},
-      {"name": "Nutella Mocha", "price": "125₺"},
-      {"name": "ChocolateBerry Latte", "price": "125₺"},
-      {"name": "Kinder Espresso", "price": "120₺"},
-      {"name": "Cocostar Latte", "price": "125₺"},
-      {"name": "Matcha Latte", "price": "135₺"},
-      {"name": "Chemex", "price": "125₺"},
-      {"name": "V60", "price": "125₺"}
-    ],
-    "soguk_special": [
-      {"name": "Ice FikaMİNT", "price": "135₺"},
-      {"name": "Ice Fındık Çikolata Latte", "price": "135₺"},
-      {"name": "Ice ChocolateBerry", "price": "135₺"},
-      {"name": "Ice Pumpkin Spice Latte", "price": "135₺"},
-      {"name": "Ice Spanish Latte", "price": "135₺"},
-      {"name": "Berryz", "price": "135₺"},
-      {"name": "Orange Mango", "price": "135₺"},
-      {"name": "Cool Lime", "price": "135₺"},
-      {"name": "Blues", "price": "135₺"},
-      {"name": "Milkshake", "price": "140₺", "description": "Çikolata-Çilek-Karadut-Coconut"},
-      {"name": "BeryLime", "price": "140₺"},
-      {"name": "Black Berryz", "price": "135₺"},
-      {"name": "Ice Matcha Latte", "price": "165₺"}
-    ],
-    "bitki_caylari": [
-      {"name": "Kış Çayı", "price": "95₺"},
-      {"name": "ADA Çayı", "price": "95₺"},
-      {"name": "Papatya Çayı", "price": "95₺"},
-      {"name": "Yeşil Çay", "price": "95₺"},
-      {"name": "Hibiscus Çayı", "price": "95₺"},
-      {"name": "Cold 911", "price": "95₺", "description": "Portakal ve Okaliptüs"},
-      {"name": "Cloud Catcher", "price": "95₺", "description": "Kivi-Kiraz"},
-      {"name": "Friends", "price": "95₺", "description": "Mango-Çilek"},
-      {"name": "Lady Tea", "price": "95₺", "description": "Çilek Ve Ananas"},
-      {"name": "Creamy Jasmine", "price": "95₺", "description": "Yasemin-Vanilla-Beyaz Çay"},
-      {"name": "Çay", "price": "25₺"}
-    ]
-  },
-  "tatlilar": [
-    {"name": "Pavlova", "price": "185₺"},
-    {"name": "Ada LOVE", "price": "220₺"},
-    {"name": "Cocostar", "price": "220₺"},
-    {"name": "Sufle", "price": "220₺"},
-    {"name": "Lotus Cake", "price": "220₺"},
-    {"name": "Fıstık Rüyası", "price": "220₺"},
-    {"name": "Frambuazlı Cheesecake", "price": "220₺"},
-    {"name": "Brownie Caramel Cheesecake", "price": "220₺"},
-    {"name": "Brownie", "price": "220₺"},
-    {"name": "BlueBerry Cake", "price": "220₺"},
-    {"name": "Tiramisu Cup", "price": "210₺"},
-    {"name": "Küp Kruvasan", "price": "230₺"},
-    {"name": "Roll Kruvasan", "price": "230₺"}
-  ],
-  "extralar": [
-    {"name": "Şurup", "price": "25₺"},
-    {"name": "Süt", "price": "25₺"},
-    {"name": "Espresso Shot", "price": "35₺"},
-    {"name": "Su", "price": "25₺"},
-    {"name": "Soda", "price": "50₺"}
+  "categories": [
+    {
+      "id": "icecekler",
+      "name": "İçecekler",
+      "icon": "images/icecekler.png",
+      "subcategories": [
+        {
+          "id": "soguk",
+          "name": "Soğuk İçecekler",
+          "items": [
+            {"name": "Ice Latte", "price": "125₺"},
+            {"name": "Ice Raspberry Latte", "price": "135₺"},
+            {"name": "Ice Mocha", "price": "135₺"},
+            {"name": "Ice Caramel Macchiato", "price": "135₺"},
+            {"name": "Ice Toffee Nut Latte", "price": "135₺"},
+            {"name": "Ice White Chocolate Mocha", "price": "135₺"},
+            {"name": "Ice Flat White", "price": "130₺"},
+            {"name": "Ice Americano", "price": "125₺"},
+            {"name": "Ice Coconut Latte", "price": "135₺"},
+            {"name": "Frappucino", "price": "140₺"}
+          ]
+        },
+        {
+          "id": "sicak",
+          "name": "Sıcak İçecekler",
+          "items": [
+            {"name": "Latte", "price": "90₺"},
+            {"name": "Mocha", "price": "110₺"},
+            {"name": "Caramel Macchiato", "price": "110₺"},
+            {"name": "Toffee Nut Latte", "price": "110₺"},
+            {"name": "White Chocolate Mocha", "price": "110₺"},
+            {"name": "Cappuccino", "price": "100₺"},
+            {"name": "Flat White", "price": "110₺"},
+            {"name": "Americano", "price": "110₺"},
+            {"name": "Cortado", "price": "100₺"}
+          ]
+        },
+        {
+          "id": "sicak_special",
+          "name": "Sıcak Special İçecekler",
+          "items": [
+            {"name": "Pumpkin Spice Latte", "price": "125₺"},
+            {"name": "Süt Reçelli Latte", "price": "125₺"},
+            {"name": "Fındık Çikolata Latte", "price": "125₺"},
+            {"name": "Lotus Latte", "price": "125₺"},
+            {"name": "Nutella Mocha", "price": "125₺"},
+            {"name": "ChocolateBerry Latte", "price": "125₺"},
+            {"name": "Kinder Espresso", "price": "120₺"},
+            {"name": "Cocostar Latte", "price": "125₺"},
+            {"name": "Matcha Latte", "price": "135₺"},
+            {"name": "Chemex", "price": "125₺"},
+            {"name": "V60", "price": "125₺"}
+          ]
+        },
+        {
+          "id": "soguk_special",
+          "name": "Soğuk Special İçecekler",
+          "items": [
+            {"name": "Ice FikaMİNT", "price": "135₺"},
+            {"name": "Ice Fındık Çikolata Latte", "price": "135₺"},
+            {"name": "Ice ChocolateBerry", "price": "135₺"},
+            {"name": "Ice Pumpkin Spice Latte", "price": "135₺"},
+            {"name": "Ice Spanish Latte", "price": "135₺"},
+            {"name": "Berryz", "price": "135₺"},
+            {"name": "Orange Mango", "price": "135₺"},
+            {"name": "Cool Lime", "price": "135₺"},
+            {"name": "Blues", "price": "135₺"},
+            {"name": "Milkshake", "price": "140₺", "description": "Çikolata-Çilek-Karadut-Coconut"},
+            {"name": "BeryLime", "price": "140₺"},
+            {"name": "Black Berryz", "price": "135₺"},
+            {"name": "Ice Matcha Latte", "price": "165₺"}
+          ]
+        },
+        {
+          "id": "bitki_caylari",
+          "name": "Bitki Çayları",
+          "items": [
+            {"name": "Kış Çayı", "price": "95₺"},
+            {"name": "ADA Çayı", "price": "95₺"},
+            {"name": "Papatya Çayı", "price": "95₺"},
+            {"name": "Yeşil Çay", "price": "95₺"},
+            {"name": "Hibiscus Çayı", "price": "95₺"},
+            {"name": "Cold 911", "price": "95₺", "description": "Portakal ve Okaliptüs"},
+            {"name": "Cloud Catcher", "price": "95₺", "description": "Kivi-Kiraz"},
+            {"name": "Friends", "price": "95₺", "description": "Mango-Çilek"},
+            {"name": "Lady Tea", "price": "95₺", "description": "Çilek Ve Ananas"},
+            {"name": "Creamy Jasmine", "price": "95₺", "description": "Yasemin-Vanilla-Beyaz Çay"},
+            {"name": "Çay", "price": "25₺"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tatlilar",
+      "name": "Tatlılar",
+      "icon": "images/tatlilar.png",
+      "subcategories": [
+        {
+          "id": "genel_tatlilar",
+          "name": "Tatlılar",
+          "items": [
+            {"name": "Pavlova", "price": "185₺"},
+            {"name": "Ada LOVE", "price": "220₺"},
+            {"name": "Cocostar", "price": "220₺"},
+            {"name": "Sufle", "price": "220₺"},
+            {"name": "Lotus Cake", "price": "220₺"},
+            {"name": "Fıstık Rüyası", "price": "220₺"},
+            {"name": "Frambuazlı Cheesecake", "price": "220₺"},
+            {"name": "Brownie Caramel Cheesecake", "price": "220₺"},
+            {"name": "Brownie", "price": "220₺"},
+            {"name": "BlueBerry Cake", "price": "220₺"},
+            {"name": "Tiramisu Cup", "price": "210₺"},
+            {"name": "Küp Kruvasan", "price": "230₺"},
+            {"name": "Roll Kruvasan", "price": "230₺"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "extralar",
+      "name": "Extralar",
+      "icon": "images/extralar.jpg",
+      "subcategories": [
+        {
+          "id": "genel_extralar",
+          "name": "Extralar",
+          "items": [
+            {"name": "Şurup", "price": "25₺"},
+            {"name": "Süt", "price": "25₺"},
+            {"name": "Espresso Shot", "price": "35₺"},
+            {"name": "Su", "price": "25₺"},
+            {"name": "Soda", "price": "50₺"}
+          ]
+        }
+      ]
+    }
   ]
 }

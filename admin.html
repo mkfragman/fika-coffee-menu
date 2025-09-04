@@ -276,59 +276,44 @@
                 <p>Güncelleniyor...</p>
             </div>
 
-            <!-- İçecekler Bölümü -->
-            <div class="section">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <h3 class="section-title">☕ İçecekler</h3>
-                    <span class="section-arrow">▼</span>
-                </div>
-                <div class="section-content">
-                    <div class="items-container">
-                        <!-- Soğuk İçecekler -->
-                        <h4 style="color: #c4390e; margin-bottom: 15px;">🧊 Soğuk İçecekler</h4>
-                        <div id="soguk-icecekler"></div>
-                        
-                        <!-- Sıcak İçecekler -->
-                        <h4 style="color: #c4390e; margin-bottom: 15px;">🔥 Sıcak İçecekler</h4>
-                        <div id="sicak-icecekler"></div>
-                        
-                        <!-- Sıcak Special -->
-                        <h4 style="color: #c4390e; margin-bottom: 15px;">⭐ Sıcak Special İçecekler</h4>
-                        <div id="sicak-special-icecekler"></div>
-                        
-                        <!-- Soğuk Special -->
-                        <h4 style="color: #c4390e; margin-bottom: 15px;">❄️ Soğuk Special İçecekler</h4>
-                        <div id="soguk-special-icecekler"></div>
-                        
-                        <!-- Bitki Çayları -->
-                        <h4 style="color: #c4390e; margin-bottom: 15px;">🍃 Bitki Çayları</h4>
-                        <div id="bitki-caylari"></div>
-                    </div>
-                </div>
-            </div>
+            <!-- Dinamik Kategoriler -->
+            <div id="categories-container"></div>
 
-            <!-- Tatlılar Bölümü -->
+            <!-- Kategori Yönetimi -->
             <div class="section">
                 <div class="section-header" onclick="toggleSection(this)">
-                    <h3 class="section-title">🍰 Tatlılar</h3>
+                    <h3 class="section-title">📁 Kategori Yönetimi</h3>
                     <span class="section-arrow">▼</span>
                 </div>
                 <div class="section-content">
                     <div class="items-container">
-                        <div id="tatlilar"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Extralar Bölümü -->
-            <div class="section">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <h3 class="section-title">➕ Extralar</h3>
-                    <span class="section-arrow">▼</span>
-                </div>
-                <div class="section-content">
-                    <div class="items-container">
-                        <div id="extralar"></div>
+                        <div class="add-item-form">
+                            <h4>Yeni Ana Kategori Ekle</h4>
+                            <div class="form-group">
+                                <label>Kategori Adı:</label>
+                                <input type="text" id="new-category-name" placeholder="Örn: Kahveler">
+                            </div>
+                            <div class="form-group">
+                                <label>Kategori İkonu (URL):</label>
+                                <input type="text" id="new-category-icon" placeholder="images/kahveler.png">
+                            </div>
+                            <button class="btn" onclick="addNewCategory()">Ana Kategori Ekle</button>
+                        </div>
+                        
+                        <div class="add-item-form" style="margin-top: 20px;">
+                            <h4>Yeni Alt Kategori Ekle</h4>
+                            <div class="form-group">
+                                <label>Ana Kategori:</label>
+                                <select id="parent-category-select">
+                                    <option value="">Ana kategori seçin</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Alt Kategori Adı:</label>
+                                <input type="text" id="new-subcategory-name" placeholder="Örn: Soğuk Kahveler">
+                            </div>
+                            <button class="btn" onclick="addNewSubcategory()">Alt Kategori Ekle</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -394,15 +379,15 @@
                                 <input type="text" id="new-item-description" placeholder="Örn: Çikolata-Çilek-Karadut">
                             </div>
                             <div class="form-group">
-                                <label>Kategori:</label>
-                                <select id="new-item-category">
-                                    <option value="soguk">Soğuk İçecekler</option>
-                                    <option value="sicak">Sıcak İçecekler</option>
-                                    <option value="sicak_special">Sıcak Special İçecekler</option>
-                                    <option value="soguk_special">Soğuk Special İçecekler</option>
-                                    <option value="bitki_caylari">Bitki Çayları</option>
-                                    <option value="tatlilar">Tatlılar</option>
-                                    <option value="extralar">Extralar</option>
+                                <label>Ana Kategori:</label>
+                                <select id="new-item-category" onchange="updateSubcategorySelect()">
+                                    <option value="">Ana kategori seçin</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Alt Kategori:</label>
+                                <select id="new-item-subcategory">
+                                    <option value="">Önce ana kategori seçin</option>
                                 </select>
                             </div>
                             <button class="btn" onclick="addNewItem()">Ürün Ekle</button>
@@ -436,22 +421,46 @@
 
         // Menüyü ekranda göster
         function renderMenu() {
-            // İçecekler
-            renderItems('soguk-icecekler', menuData.icecekler.soguk, 'soguk');
-            renderItems('sicak-icecekler', menuData.icecekler.sicak, 'sicak');
-            renderItems('sicak-special-icecekler', menuData.icecekler.sicak_special, 'sicak_special');
-            renderItems('soguk-special-icecekler', menuData.icecekler.soguk_special, 'soguk_special');
-            renderItems('bitki-caylari', menuData.icecekler.bitki_caylari, 'bitki_caylari');
-            
-            // Tatlılar
-            renderItems('tatlilar', menuData.tatlilar, 'tatlilar');
-            
-            // Extralar
-            renderItems('extralar', menuData.extralar, 'extralar');
+            const container = document.getElementById('categories-container');
+            container.innerHTML = '';
+
+            menuData.categories.forEach(category => {
+                const categorySection = document.createElement('div');
+                categorySection.className = 'section';
+                categorySection.innerHTML = `
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <h3 class="section-title">${getCategoryIcon(category.id)} ${category.name}</h3>
+                        <span class="section-arrow">▼</span>
+                        <button class="btn btn-danger" onclick="deleteCategory('${category.id}')" style="margin-left: 10px; padding: 5px 10px; font-size: 12px;">Sil</button>
+                    </div>
+                    <div class="section-content">
+                        <div class="items-container">
+                            ${category.subcategories.map(subcategory => `
+                                <div style="margin-bottom: 20px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                        <h4 style="color: #c4390e; margin: 0;">${subcategory.name}</h4>
+                                        <button class="btn btn-danger" onclick="deleteSubcategory('${category.id}', '${subcategory.id}')" style="padding: 3px 8px; font-size: 11px;">Alt Kategori Sil</button>
+                                    </div>
+                                    <div id="${category.id}-${subcategory.id}"></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(categorySection);
+
+                // Alt kategorileri render et
+                category.subcategories.forEach(subcategory => {
+                    renderItems(`${category.id}-${subcategory.id}`, subcategory.items, category.id, subcategory.id);
+                });
+            });
+
+            // Select listelerini güncelle
+            updateCategorySelects();
         }
 
         // Ürünleri render et
-        function renderItems(containerId, items, category) {
+        function renderItems(containerId, items, categoryId, subcategoryId) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
 
@@ -462,50 +471,103 @@
                     <div class="item-name">${item.name}</div>
                     <div class="item-price">
                         <input type="text" value="${item.price}" 
-                               onchange="updatePrice('${category}', ${index}, this.value)"
+                               onchange="updatePrice('${categoryId}', '${subcategoryId}', ${index}, this.value)"
                                style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">
                     </div>
                     <div class="item-description">
                         ${item.description ? `<input type="text" value="${item.description}" 
-                               onchange="updateDescription('${category}', ${index}, this.value)"
+                               onchange="updateDescription('${categoryId}', '${subcategoryId}', ${index}, this.value)"
                                style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">` : ''}
                     </div>
-                    <button class="btn btn-danger" onclick="removeItem('${category}', ${index})">Sil</button>
+                    <button class="btn btn-danger" onclick="removeItem('${categoryId}', '${subcategoryId}', ${index})">Sil</button>
                 `;
                 container.appendChild(itemRow);
             });
         }
 
-        // Fiyat güncelle
-        function updatePrice(category, index, newPrice) {
-            if (category === 'tatlilar' || category === 'extralar') {
-                menuData[category][index].price = newPrice;
-            } else {
-                menuData.icecekler[category][index].price = newPrice;
+        // Kategori ikonunu al
+        function getCategoryIcon(categoryId) {
+            const icons = {
+                'icecekler': '☕',
+                'tatlilar': '🍰',
+                'extralar': '➕'
+            };
+            return icons[categoryId] || '📁';
+        }
+
+        // Kategori select listelerini güncelle
+        function updateCategorySelects() {
+            const parentSelect = document.getElementById('parent-category-select');
+            const itemCategorySelect = document.getElementById('new-item-category');
+            
+            // Mevcut seçenekleri temizle
+            parentSelect.innerHTML = '<option value="">Ana kategori seçin</option>';
+            itemCategorySelect.innerHTML = '<option value="">Ana kategori seçin</option>';
+            
+            // Kategorileri ekle
+            menuData.categories.forEach(category => {
+                const option1 = new Option(category.name, category.id);
+                const option2 = new Option(category.name, category.id);
+                parentSelect.add(option1);
+                itemCategorySelect.add(option2);
+            });
+        }
+
+        // Alt kategori select'ini güncelle
+        function updateSubcategorySelect() {
+            const categorySelect = document.getElementById('new-item-category');
+            const subcategorySelect = document.getElementById('new-item-subcategory');
+            const selectedCategoryId = categorySelect.value;
+            
+            subcategorySelect.innerHTML = '<option value="">Alt kategori seçin</option>';
+            
+            if (selectedCategoryId) {
+                const category = menuData.categories.find(cat => cat.id === selectedCategoryId);
+                if (category) {
+                    category.subcategories.forEach(subcategory => {
+                        const option = new Option(subcategory.name, subcategory.id);
+                        subcategorySelect.add(option);
+                    });
+                }
             }
-            saveMenuData();
+        }
+
+        // Fiyat güncelle
+        function updatePrice(categoryId, subcategoryId, index, newPrice) {
+            const category = menuData.categories.find(cat => cat.id === categoryId);
+            if (category) {
+                const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
+                if (subcategory) {
+                    subcategory.items[index].price = newPrice;
+                    saveMenuData();
+                }
+            }
         }
 
         // Açıklama güncelle
-        function updateDescription(category, index, newDescription) {
-            if (category === 'tatlilar' || category === 'extralar') {
-                menuData[category][index].description = newDescription;
-            } else {
-                menuData.icecekler[category][index].description = newDescription;
+        function updateDescription(categoryId, subcategoryId, index, newDescription) {
+            const category = menuData.categories.find(cat => cat.id === categoryId);
+            if (category) {
+                const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
+                if (subcategory) {
+                    subcategory.items[index].description = newDescription;
+                    saveMenuData();
+                }
             }
-            saveMenuData();
         }
 
         // Ürün sil
-        function removeItem(category, index) {
+        function removeItem(categoryId, subcategoryId, index) {
             if (confirm('Bu ürünü silmek istediğinizden emin misiniz?')) {
-                if (category === 'tatlilar' || category === 'extralar') {
-                    menuData[category].splice(index, 1);
-                } else {
-                    menuData.icecekler[category].splice(index, 1);
+                const category = menuData.categories.find(cat => cat.id === categoryId);
+                if (category) {
+                    const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
+                    if (subcategory) {
+                        subcategory.items.splice(index, 1);
+                        saveMenuData();
+                        renderMenu();
+                    }
                 }
-                saveMenuData();
-                renderMenu();
             }
         }
 
@@ -514,10 +576,11 @@
             const name = document.getElementById('new-item-name').value;
             const price = document.getElementById('new-item-price').value;
             const description = document.getElementById('new-item-description').value;
-            const category = document.getElementById('new-item-category').value;
+            const categoryId = document.getElementById('new-item-category').value;
+            const subcategoryId = document.getElementById('new-item-subcategory').value;
 
-            if (!name || !price) {
-                showStatus('Ürün adı ve fiyat alanları zorunludur!', 'error');
+            if (!name || !price || !categoryId || !subcategoryId) {
+                showStatus('Tüm alanları doldurun!', 'error');
                 return;
             }
 
@@ -526,20 +589,111 @@
                 newItem.description = description;
             }
 
-            if (category === 'tatlilar' || category === 'extralar') {
-                menuData[category].push(newItem);
-            } else {
-                menuData.icecekler[category].push(newItem);
+            const category = menuData.categories.find(cat => cat.id === categoryId);
+            if (category) {
+                const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
+                if (subcategory) {
+                    subcategory.items.push(newItem);
+                }
             }
 
             // Formu temizle
             document.getElementById('new-item-name').value = '';
             document.getElementById('new-item-price').value = '';
             document.getElementById('new-item-description').value = '';
+            document.getElementById('new-item-category').value = '';
+            document.getElementById('new-item-subcategory').innerHTML = '<option value="">Önce ana kategori seçin</option>';
 
             saveMenuData();
             renderMenu();
             showStatus('Yeni ürün başarıyla eklendi!', 'success');
+        }
+
+        // Yeni ana kategori ekle
+        function addNewCategory() {
+            const name = document.getElementById('new-category-name').value;
+            const icon = document.getElementById('new-category-icon').value;
+
+            if (!name) {
+                showStatus('Kategori adı zorunludur!', 'error');
+                return;
+            }
+
+            const newCategory = {
+                id: name.toLowerCase().replace(/\s+/g, '_'),
+                name: name,
+                icon: icon || 'images/default.png',
+                subcategories: [
+                    {
+                        id: 'genel',
+                        name: 'Genel',
+                        items: []
+                    }
+                ]
+            };
+
+            menuData.categories.push(newCategory);
+
+            // Formu temizle
+            document.getElementById('new-category-name').value = '';
+            document.getElementById('new-category-icon').value = '';
+
+            saveMenuData();
+            renderMenu();
+            showStatus('Yeni ana kategori başarıyla eklendi!', 'success');
+        }
+
+        // Yeni alt kategori ekle
+        function addNewSubcategory() {
+            const parentCategoryId = document.getElementById('parent-category-select').value;
+            const name = document.getElementById('new-subcategory-name').value;
+
+            if (!parentCategoryId || !name) {
+                showStatus('Tüm alanları doldurun!', 'error');
+                return;
+            }
+
+            const category = menuData.categories.find(cat => cat.id === parentCategoryId);
+            if (category) {
+                const newSubcategory = {
+                    id: name.toLowerCase().replace(/\s+/g, '_'),
+                    name: name,
+                    items: []
+                };
+
+                category.subcategories.push(newSubcategory);
+            }
+
+            // Formu temizle
+            document.getElementById('parent-category-select').value = '';
+            document.getElementById('new-subcategory-name').value = '';
+
+            saveMenuData();
+            renderMenu();
+            showStatus('Yeni alt kategori başarıyla eklendi!', 'success');
+        }
+
+        // Ana kategori sil
+        function deleteCategory(categoryId) {
+            if (confirm('Bu ana kategoriyi ve tüm alt kategorilerini silmek istediğinizden emin misiniz?')) {
+                menuData.categories = menuData.categories.filter(cat => cat.id !== categoryId);
+                saveMenuData();
+                renderMenu();
+                showStatus('Ana kategori başarıyla silindi!', 'success');
+            }
+        }
+
+        // Alt kategori sil
+        function deleteSubcategory(categoryId, subcategoryId) {
+            if (confirm('Bu alt kategoriyi ve tüm ürünlerini silmek istediğinizden emin misiniz?')) {
+                const category = menuData.categories.find(cat => cat.id === categoryId);
+                if (category) {
+                    category.subcategories = category.subcategories.filter(sub => sub.id !== subcategoryId);
+                }
+                saveMenuData();
+                renderMenu();
+                showStatus('Alt kategori başarıyla silindi!', 'success');
+            }
         }
 
         // Menü verilerini kaydet
