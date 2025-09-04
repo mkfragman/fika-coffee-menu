@@ -618,10 +618,3 @@ class MenuUpdater {
     }
 }
 
-// Global değişken
-let menuUpdater;
-
-// Sayfa yüklendiğinde başlat
-document.addEventListener('DOMContentLoaded', function() {
-    menuUpdater = new MenuUpdater();
-});

@@ -400,15 +400,40 @@
 
     <script src="update-menu.js"></script>
     <script>
+        console.log('Script yükleniyor...');
         let menuData = {};
         let menuUpdater = null;
+        
+        // Global fonksiyonları tanımla
+        window.toggleSection = function(header) {
+            console.log('toggleSection çağrıldı:', header);
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('.section-arrow');
+            
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                arrow.classList.remove('rotated');
+                console.log('Bölüm kapandı');
+            } else {
+                content.classList.add('open');
+                arrow.classList.add('rotated');
+                console.log('Bölüm açıldı');
+            }
+        };
 
         // Sayfa yüklendiğinde menü verilerini yükle
         document.addEventListener('DOMContentLoaded', async function() {
-            await loadMenuData();
-            loadGitHubSettings();
-            // MenuUpdater instance'ını oluştur
-            menuUpdater = new MenuUpdater(menuData);
+            console.log('Admin panel yükleniyor...');
+            try {
+                await loadMenuData();
+                loadGitHubSettings();
+                // MenuUpdater instance'ını oluştur
+                menuUpdater = new MenuUpdater(menuData);
+                console.log('Admin panel başarıyla yüklendi!');
+            } catch (error) {
+                console.error('Admin panel yüklenirken hata:', error);
+                showStatus('Admin panel yüklenirken hata oluştu: ' + error.message, 'error');
+            }
         });
 
         // Menü verilerini yükle
@@ -736,19 +761,6 @@
             }
         }
 
-        // Bölüm aç/kapat
-        function toggleSection(header) {
-            const content = header.nextElementSibling;
-            const arrow = header.querySelector('.section-arrow');
-            
-            if (content.classList.contains('open')) {
-                content.classList.remove('open');
-                arrow.classList.remove('rotated');
-            } else {
-                content.classList.add('open');
-                arrow.classList.add('rotated');
-            }
-        }
 
         // Durum mesajı göster
         function showStatus(message, type) {
