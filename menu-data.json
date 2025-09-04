@@ -361,6 +361,18 @@
           "items": []
         }
       ]
+    },
+    {
+      "id": "pastane",
+      "name": "Pastane",
+      "icon": "images/default.png",
+      "subcategories": [
+        {
+          "id": "genel",
+          "name": "Genel",
+          "items": []
+        }
+      ]
     }
   ]
 }
