@@ -10,16 +10,8 @@
           "name": "Soğuk İçecekler",
           "items": [
             {
-              "name": "Ice Latte",
-              "price": "125₺"
-            },
-            {
-              "name": "Ice Raspberry Latte",
-              "price": "135₺"
-            },
-            {
-              "name": "Ice Mocha",
-              "price": "135₺"
+              "name": "asd",
+              "price": "987₺"
             },
             {
               "name": "Ice Caramel Macchiato",
@@ -48,11 +40,6 @@
             {
               "name": "Frappucino",
               "price": "140₺"
-            },
-            {
-              "name": "asd",
-              "price": "123",
-              "description": "qwe"
             }
           ]
         },
@@ -326,11 +313,6 @@
               "price": "230₺"
             }
           ]
-        },
-        {
-          "id": "special",
-          "name": "Special",
-          "items": []
         }
       ]
     },
@@ -364,6 +346,11 @@
               "price": "50₺"
             }
           ]
+        },
+        {
+          "id": "gurmeler",
+          "name": "gurmeler",
+          "items": []
         }
       ]
     }
