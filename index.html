@@ -238,18 +238,6 @@
             line-height: 1.4;
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #c4390e;
-        }
-
-        .error {
-            text-align: center;
-            padding: 40px;
-            color: #dc3545;
-        }
-
         @media (max-width: 480px) {
             .container {
                 max-width: 100%;
@@ -284,191 +272,675 @@
             <p class="header-slogan">Günlük koşturmaya bir fincan kahve ve tatlı ile ara vererek sakinleş ✨</p>
         </div>
 
-        <div class="tabs" id="tabs-container">
-            <!-- Dinamik olarak yüklenecek -->
+        <div class="tabs">
+            
+            <div class="tab" onclick="showCategory('icecekler')">
+                <img src="images/icecekler.png" alt="İçecekler" class="tab-image">
+                <div class="tab-title">İçecekler</div>
+            </div>
+        
+            <div class="tab" onclick="showCategory('tatlilar')">
+                <img src="images/tatlilar.png" alt="Tatlılar" class="tab-image">
+                <div class="tab-title">Tatlılar</div>
+            </div>
+        
+            <div class="tab" onclick="showCategory('extralar')">
+                <img src="images/extralar.jpg" alt="Extralar" class="tab-image">
+                <div class="tab-title">Extralar</div>
+            </div>
+        
         </div>
 
-        <div class="content" id="content-container">
-            <!-- Dinamik olarak yüklenecek -->
+        <div class="content">
+            
+                <div id="icecekler" class="category-section active">
+                    
+            <div class="subcategory">
+                <div class="subcategory-header" onclick="toggleSubcategory(this)">
+                    <h3 class="subcategory-title">Soğuk İçecekler</h3>
+                    <span class="subcategory-arrow">▼</span>
+                </div>
+                <div class="subcategory-content">
+                    <div class="subcategory-items">
+                        
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ali osman</div>
+                        <div class="item-price">5₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice Mocha</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice Caramel Macchiato</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice Toffee Nut Latte</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice White Chocolate Mocha</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice Flat White</div>
+                        <div class="item-price">130₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice Americano</div>
+                        <div class="item-price">125₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice Coconut Latte</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Frappucino</div>
+                        <div class="item-price">140₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Kuşburnu</div>
+                        <div class="item-price">500</div>
+                    </div>
+                    <div class="item-description">Kuş, gaga</div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subcategory">
+                <div class="subcategory-header" onclick="toggleSubcategory(this)">
+                    <h3 class="subcategory-title">Sıcak İçecekler</h3>
+                    <span class="subcategory-arrow">▼</span>
+                </div>
+                <div class="subcategory-content">
+                    <div class="subcategory-items">
+                        
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Latte</div>
+                        <div class="item-price">90₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Mocha</div>
+                        <div class="item-price">110₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Caramel Macchiato</div>
+                        <div class="item-price">110₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Toffee Nut Latte</div>
+                        <div class="item-price">110₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">White Chocolate Mocha</div>
+                        <div class="item-price">110₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Cappuccino</div>
+                        <div class="item-price">100₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Flat White</div>
+                        <div class="item-price">110₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Americano</div>
+                        <div class="item-price">110₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Cortado</div>
+                        <div class="item-price">100₺</div>
+                    </div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subcategory">
+                <div class="subcategory-header" onclick="toggleSubcategory(this)">
+                    <h3 class="subcategory-title">Sıcak Special İçecekler</h3>
+                    <span class="subcategory-arrow">▼</span>
+                </div>
+                <div class="subcategory-content">
+                    <div class="subcategory-items">
+                        
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Pumpkin Spice Latte</div>
+                        <div class="item-price">125₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Süt Reçelli Latte</div>
+                        <div class="item-price">125₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Fındık Çikolata Latte</div>
+                        <div class="item-price">125₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Lotus Latte</div>
+                        <div class="item-price">125₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Nutella Mocha</div>
+                        <div class="item-price">125₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">ChocolateBerry Latte</div>
+                        <div class="item-price">125₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Kinder Espresso</div>
+                        <div class="item-price">120₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Cocostar Latte</div>
+                        <div class="item-price">125₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Matcha Latte</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Chemex</div>
+                        <div class="item-price">125₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">V60</div>
+                        <div class="item-price">125₺</div>
+                    </div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subcategory">
+                <div class="subcategory-header" onclick="toggleSubcategory(this)">
+                    <h3 class="subcategory-title">Soğuk Special İçecekler</h3>
+                    <span class="subcategory-arrow">▼</span>
+                </div>
+                <div class="subcategory-content">
+                    <div class="subcategory-items">
+                        
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice FikaMİNT</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice Fındık Çikolata Latte</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice ChocolateBerry</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice Pumpkin Spice Latte</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice Spanish Latte</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Berryz</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Orange Mango</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Cool Lime</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Blues</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Milkshake</div>
+                        <div class="item-price">140₺</div>
+                    </div>
+                    <div class="item-description">Çikolata-Çilek-Karadut-Coconut</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">BeryLime</div>
+                        <div class="item-price">140₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Black Berryz</div>
+                        <div class="item-price">135₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ice Matcha Latte</div>
+                        <div class="item-price">165₺</div>
+                    </div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subcategory">
+                <div class="subcategory-header" onclick="toggleSubcategory(this)">
+                    <h3 class="subcategory-title">Bitki Çayları</h3>
+                    <span class="subcategory-arrow">▼</span>
+                </div>
+                <div class="subcategory-content">
+                    <div class="subcategory-items">
+                        
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Kış Çayı</div>
+                        <div class="item-price">95₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">ADA Çayı</div>
+                        <div class="item-price">95₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Papatya Çayı</div>
+                        <div class="item-price">95₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Yeşil Çay</div>
+                        <div class="item-price">95₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Hibiscus Çayı</div>
+                        <div class="item-price">95₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Cold 911</div>
+                        <div class="item-price">95₺</div>
+                    </div>
+                    <div class="item-description">Portakal ve Okaliptüs</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Cloud Catcher</div>
+                        <div class="item-price">95₺</div>
+                    </div>
+                    <div class="item-description">Kivi-Kiraz</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Friends</div>
+                        <div class="item-price">95₺</div>
+                    </div>
+                    <div class="item-description">Mango-Çilek</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Lady Tea</div>
+                        <div class="item-price">95₺</div>
+                    </div>
+                    <div class="item-description">Çilek Ve Ananas</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Creamy Jasmine</div>
+                        <div class="item-price">95₺</div>
+                    </div>
+                    <div class="item-description">Yasemin-Vanilla-Beyaz Çay</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Çay</div>
+                        <div class="item-price">25₺</div>
+                    </div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+            
+                <div id="tatlilar" class="category-section ">
+                    
+            <div class="subcategory">
+                <div class="subcategory-header" onclick="toggleSubcategory(this)">
+                    <h3 class="subcategory-title">Tatlılar</h3>
+                    <span class="subcategory-arrow">▼</span>
+                </div>
+                <div class="subcategory-content">
+                    <div class="subcategory-items">
+                        
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Pavlova</div>
+                        <div class="item-price">185₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Ada LOVE</div>
+                        <div class="item-price">220₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Cocostar</div>
+                        <div class="item-price">220₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Sufle</div>
+                        <div class="item-price">220₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Lotus Cake</div>
+                        <div class="item-price">220₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Fıstık Rüyası</div>
+                        <div class="item-price">220₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Frambuazlı Cheesecake</div>
+                        <div class="item-price">220₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Brownie Caramel Cheesecake</div>
+                        <div class="item-price">220₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Brownie</div>
+                        <div class="item-price">220₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">BlueBerry Cake</div>
+                        <div class="item-price">220₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Tiramisu Cup</div>
+                        <div class="item-price">210₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Küp Kruvasan</div>
+                        <div class="item-price">230₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Roll Kruvasan</div>
+                        <div class="item-price">230₺</div>
+                    </div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+            
+                <div id="extralar" class="category-section ">
+                    
+            <div class="subcategory">
+                <div class="subcategory-header" onclick="toggleSubcategory(this)">
+                    <h3 class="subcategory-title">Extralar</h3>
+                    <span class="subcategory-arrow">▼</span>
+                </div>
+                <div class="subcategory-content">
+                    <div class="subcategory-items">
+                        
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Şurup</div>
+                        <div class="item-price">25₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Süt</div>
+                        <div class="item-price">25₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Espresso Shot</div>
+                        <div class="item-price">35₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Su</div>
+                        <div class="item-price">25₺</div>
+                    </div>
+                    
+                </div>
+                <div class="menu-item">
+                    <div class="item-header">
+                        <div class="item-name">Soda</div>
+                        <div class="item-price">50₺</div>
+                    </div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subcategory">
+                <div class="subcategory-header" onclick="toggleSubcategory(this)">
+                    <h3 class="subcategory-title">Efes +1</h3>
+                    <span class="subcategory-arrow">▼</span>
+                </div>
+                <div class="subcategory-content">
+                    <div class="subcategory-items">
+                        
+                    </div>
+                </div>
+            </div>
+                </div>
+            
         </div>
     </div>
 
     <script>
-        let menuData = {};
-
-        // Sayfa yüklendiğinde menüyü yükle
-        document.addEventListener('DOMContentLoaded', function() {
-            loadMenu();
-        });
-
-        // Menü verilerini yükle
-        async function loadMenu() {
-            try {
-                const response = await fetch('menu-data.json', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8',
-                    },
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const text = await response.text();
-                menuData = JSON.parse(text);
-                renderMenu();
-            } catch (error) {
-                console.error('Menü yüklenirken hata:', error);
-                
-                // CORS hatası kontrolü
-                if (error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
-                    showError('CORS Hatası: Dosyaları yerel sunucu ile açmanız gerekiyor.<br><br>' +
-                        '<strong>Çözüm:</strong><br>' +
-                        '1. Terminal/PowerShell açın<br>' +
-                        '2. Proje klasörüne gidin<br>' +
-                        '3. <code>python -m http.server 8000</code> çalıştırın<br>' +
-                        '4. <a href="http://localhost:8000" target="_blank">http://localhost:8000</a> adresini açın');
-                } else {
-                    showError('Menü yüklenirken hata oluştu! Lütfen sayfayı yenileyin.');
-                }
-            }
-        }
-
-
-        // Menüyü render et
-        function renderMenu() {
-            renderTabs();
-            renderContent();
-        }
-
-        // Tab'ları render et
-        function renderTabs() {
-            const tabsContainer = document.getElementById('tabs-container');
-            tabsContainer.innerHTML = '';
-
-            menuData.categories.forEach((category, index) => {
-                const tab = document.createElement('div');
-                tab.className = `tab ${index === 0 ? 'active' : ''}`;
-                tab.onclick = () => showCategory(category.id);
-                tab.innerHTML = `
-                    <img src="${category.icon}" alt="${category.name}" class="tab-image">
-                    <div class="tab-title">${category.name}</div>
-                `;
-                tabsContainer.appendChild(tab);
-            });
-        }
-
-        // İçeriği render et
-        function renderContent() {
-            const contentContainer = document.getElementById('content-container');
-            contentContainer.innerHTML = '';
-
-            menuData.categories.forEach((category, index) => {
-                const categorySection = document.createElement('div');
-                categorySection.id = category.id;
-                categorySection.className = `category-section ${index === 0 ? 'active' : ''}`;
-                
-                const subcategoriesHTML = category.subcategories.map(subcategory => 
-                    generateSubcategoryHTML(subcategory)
-                ).join('');
-                
-                categorySection.innerHTML = subcategoriesHTML;
-                contentContainer.appendChild(categorySection);
-            });
-
-            // İlk kategori accordion'larını kapat
-            const firstCategory = document.querySelector('.category-section.active');
-            if (firstCategory && firstCategory.id === 'icecekler') {
-                closeAccordions(firstCategory);
-            } else if (firstCategory) {
-                openAccordions(firstCategory);
-            }
-        }
-
-        // Alt kategori HTML'i oluştur
-        function generateSubcategoryHTML(subcategory) {
-            const itemsHTML = subcategory.items.map(item => `
-                <div class="menu-item">
-                    <div class="item-header">
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-price">${item.price}</div>
-                    </div>
-                    ${item.description ? `<div class="item-description">${item.description}</div>` : ''}
-                </div>
-            `).join('');
-
-            return `
-                <div class="subcategory">
-                    <div class="subcategory-header" onclick="toggleSubcategory(this)">
-                        <h3 class="subcategory-title">${subcategory.name}</h3>
-                        <span class="subcategory-arrow">▼</span>
-                    </div>
-                    <div class="subcategory-content">
-                        <div class="subcategory-items">
-                            ${itemsHTML}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Kategori göster
         function showCategory(categoryId) {
-            // Tüm kategorileri gizle
             const categories = document.querySelectorAll('.category-section');
             categories.forEach(category => {
                 category.classList.remove('active');
             });
 
-            // Tüm tabları pasif yap
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => {
                 tab.classList.remove('active');
             });
 
-            // Seçilen kategoriyi göster
             document.getElementById(categoryId).classList.add('active');
-
-            // Seçilen tabı aktif yap
             event.currentTarget.classList.add('active');
 
-            // Accordion durumlarını ayarla
-            const activeCategory = document.getElementById(categoryId);
-            if (categoryId === 'icecekler') {
-                closeAccordions(activeCategory);
+            // İlk kategori (genellikle içecekler) için accordion'ları kapat
+            const firstCategory = document.querySelector('.category-section.active');
+            if (firstCategory && firstCategory.id === 'icecekler') {
+                const subcategories = firstCategory.querySelectorAll('.subcategory-content');
+                subcategories.forEach(subcategory => {
+                    subcategory.classList.remove('open');
+                });
+                
+                const arrows = firstCategory.querySelectorAll('.subcategory-arrow');
+                arrows.forEach(arrow => {
+                    arrow.classList.remove('rotated');
+                });
             } else {
-                openAccordions(activeCategory);
+                // Diğer kategoriler için accordion'ları aç
+                const currentSubcategories = firstCategory.querySelectorAll('.subcategory-content');
+                currentSubcategories.forEach(subcategory => {
+                    subcategory.classList.add('open');
+                });
+                
+                const currentArrows = firstCategory.querySelectorAll('.subcategory-arrow');
+                currentArrows.forEach(arrow => {
+                    arrow.classList.add('rotated');
+                });
             }
         }
 
-        // Accordion'ları kapat
-        function closeAccordions(category) {
-            const subcategories = category.querySelectorAll('.subcategory-content');
-            subcategories.forEach(subcategory => {
-                subcategory.classList.remove('open');
-            });
-            
-            const arrows = category.querySelectorAll('.subcategory-arrow');
-            arrows.forEach(arrow => {
-                arrow.classList.remove('rotated');
-            });
-        }
-
-        // Accordion'ları aç
-        function openAccordions(category) {
-            const subcategories = category.querySelectorAll('.subcategory-content');
-            subcategories.forEach(subcategory => {
-                subcategory.classList.add('open');
-            });
-            
-            const arrows = category.querySelectorAll('.subcategory-arrow');
-            arrows.forEach(arrow => {
-                arrow.classList.add('rotated');
-            });
-        }
-
-        // Alt kategori aç/kapat
         function toggleSubcategory(header) {
             const content = header.nextElementSibling;
             const arrow = header.querySelector('.subcategory-arrow');
@@ -482,52 +954,27 @@
             }
         }
 
-        // Hata göster
-        function showError(message) {
-            const contentContainer = document.getElementById('content-container');
-            contentContainer.innerHTML = `
-                <div class="error">
-                    <h3>⚠️ Hata</h3>
-                    <p>${message}</p>
-                    <p style="font-size: 12px; margin-top: 10px; color: #666;">
-                        Tarayıcı konsolunu kontrol edin (F12) daha fazla detay için.
-                    </p>
-                    <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #c4390e; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                        Tekrar Dene
-                    </button>
-                    <button onclick="testConnection()" style="margin-top: 10px; padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">
-                        Bağlantıyı Test Et
-                    </button>
-                </div>
-            `;
-        }
-
-        // Bağlantı testi
-        async function testConnection() {
-            try {
-                const response = await fetch('menu-data.json');
-                console.log('Response status:', response.status);
-                console.log('Response headers:', response.headers);
-                
-                if (response.ok) {
-                    const text = await response.text();
-                    console.log('Response text:', text);
-                    try {
-                        const json = JSON.parse(text);
-                        console.log('Parsed JSON:', json);
-                        alert('JSON dosyası başarıyla yüklendi! Sayfayı yenileyin.');
-                    } catch (parseError) {
-                        console.error('JSON parse error:', parseError);
-                        alert('JSON dosyası bozuk!');
-                    }
-                } else {
-                    alert(`HTTP Hatası: ${response.status}`);
-                }
-            } catch (error) {
-                console.error('Connection test error:', error);
-                alert(`Bağlantı hatası: ${error.message}`);
+        document.addEventListener('DOMContentLoaded', function() {
+            // İlk kategoriyi aktif yap
+            const firstTab = document.querySelector('.tab');
+            if (firstTab) {
+                firstTab.classList.add('active');
             }
-        }
+            
+            // İlk kategori accordion'larını kapat
+            const firstCategory = document.querySelector('.category-section.active');
+            if (firstCategory) {
+                const subcategories = firstCategory.querySelectorAll('.subcategory-content');
+                subcategories.forEach(subcategory => {
+                    subcategory.classList.remove('open');
+                });
+                
+                const arrows = firstCategory.querySelectorAll('.subcategory-arrow');
+                arrows.forEach(arrow => {
+                    arrow.classList.remove('rotated');
+                });
+            }
+        });
     </script>
 </body>
 </html>
