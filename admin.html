@@ -110,6 +110,12 @@
             border-left: 4px solid #c4390e;
         }
 
+        .item-actions {
+            display: flex;
+            gap: 5px;
+            min-width: 120px;
+        }
+
         .item-name {
             flex: 1;
             font-weight: 600;
@@ -226,6 +232,32 @@
             border: 1px solid #f5c6cb;
         }
 
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .draft-status {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 2px solid #2196f3;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #f57c00;
+        }
+
         .loading {
             display: none;
             text-align: center;
@@ -265,6 +297,12 @@
         <div class="header">
             <h1>☕ Fika Coffee</h1>
             <p>Menü Yönetim Paneli</p>
+            <div id="draft-status" class="draft-status" style="display: none;">
+                <span id="draft-count">0</span> değişiklik bekliyor
+                <button class="btn btn-warning" onclick="previewChanges()" style="margin-left: 10px;">Önizle</button>
+                <button class="btn btn-success" onclick="saveAllChanges()" style="margin-left: 5px;">Tümünü Kaydet</button>
+                <button class="btn btn-danger" onclick="discardChanges()" style="margin-left: 5px;">Geri Al</button>
+            </div>
         </div>
 
         <div class="content">
@@ -402,6 +440,8 @@
     <script>
         console.log('Script yükleniyor...');
         let menuData = {};
+        let originalMenuData = {}; // Orijinal veri (backup)
+        let draftChanges = []; // Bekleyen değişiklikler
         let menuUpdater = null;
         
         // Global fonksiyonları tanımla
@@ -441,6 +481,8 @@
             try {
                 const response = await fetch('menu-data.json');
                 menuData = await response.json();
+                // Orijinal veriyi backup olarak sakla
+                originalMenuData = JSON.parse(JSON.stringify(menuData));
                 renderMenu();
                 // MenuUpdater'ı güncelle
                 if (menuUpdater) {
@@ -500,18 +542,26 @@
                 const itemRow = document.createElement('div');
                 itemRow.className = 'item-row';
                 itemRow.innerHTML = `
-                    <div class="item-name">${item.name}</div>
+                    <div class="item-name">
+                        <input type="text" value="${item.name}" 
+                               id="name-${categoryId}-${subcategoryId}-${index}"
+                               style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">
+                    </div>
                     <div class="item-price">
                         <input type="text" value="${item.price}" 
-                               onchange="updatePrice('${categoryId}', '${subcategoryId}', ${index}, this.value)"
+                               id="price-${categoryId}-${subcategoryId}-${index}"
                                style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">
                     </div>
                     <div class="item-description">
-                        ${item.description ? `<input type="text" value="${item.description}" 
-                               onchange="updateDescription('${categoryId}', '${subcategoryId}', ${index}, this.value)"
-                               style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">` : ''}
+                        <input type="text" value="${item.description || ''}" 
+                               id="desc-${categoryId}-${subcategoryId}-${index}"
+                               placeholder="Açıklama (opsiyonel)"
+                               style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">
                     </div>
-                    <button class="btn btn-danger" onclick="removeItem('${categoryId}', '${subcategoryId}', ${index})">Sil</button>
+                    <div class="item-actions">
+                        <button class="btn btn-success" onclick="updateItem('${categoryId}', '${subcategoryId}', ${index})" style="margin-right: 5px;">Güncelle</button>
+                        <button class="btn btn-danger" onclick="removeItem('${categoryId}', '${subcategoryId}', ${index})">Sil</button>
+                    </div>
                 `;
                 container.appendChild(itemRow);
             });
@@ -588,16 +638,66 @@
             }
         }
 
-        // Ürün sil
+        // Ürün güncelle (Draft modunda)
+        function updateItem(categoryId, subcategoryId, itemIndex) {
+            const nameInput = document.getElementById(`name-${categoryId}-${subcategoryId}-${itemIndex}`);
+            const priceInput = document.getElementById(`price-${categoryId}-${subcategoryId}-${itemIndex}`);
+            const descInput = document.getElementById(`desc-${categoryId}-${subcategoryId}-${itemIndex}`);
+            
+            const newName = nameInput.value.trim();
+            const newPrice = priceInput.value.trim();
+            const newDescription = descInput.value.trim();
+            
+            if (!newName || !newPrice) {
+                showStatus('Ürün adı ve fiyatı boş olamaz!', 'error');
+                return;
+            }
+            
+            const category = menuData.categories.find(cat => cat.id === categoryId);
+            const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
+            const item = subcategory.items[itemIndex];
+            
+            // Orijinal veriyi bul
+            const originalCategory = originalMenuData.categories.find(cat => cat.id === categoryId);
+            const originalSubcategory = originalCategory.subcategories.find(sub => sub.id === subcategoryId);
+            const originalItem = originalSubcategory.items[itemIndex];
+            
+            // Değişiklik var mı kontrol et
+            if (originalItem.name === newName && originalItem.price === newPrice && (originalItem.description || '') === newDescription) {
+                showStatus('Herhangi bir değişiklik yapılmadı!', 'warning');
+                return;
+            }
+            
+            // Güncelle
+            item.name = newName;
+            item.price = newPrice;
+            item.description = newDescription || undefined;
+            
+            // Draft değişikliğini kaydet
+            addDraftChange('update', categoryId, subcategoryId, itemIndex, {
+                name: newName,
+                price: newPrice,
+                description: newDescription || undefined
+            });
+            
+            showStatus('Değişiklik draft\'a eklendi!', 'success');
+        }
+
+        // Ürün sil (Draft modunda)
         function removeItem(categoryId, subcategoryId, index) {
             if (confirm('Bu ürünü silmek istediğinizden emin misiniz?')) {
                 const category = menuData.categories.find(cat => cat.id === categoryId);
                 if (category) {
                     const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
                     if (subcategory) {
+                        const item = subcategory.items[index];
+                        
+                        // Draft değişikliğini kaydet
+                        addDraftChange('delete', categoryId, subcategoryId, index, item);
+                        
                         subcategory.items.splice(index, 1);
-                        saveMenuData();
                         renderMenu();
+                        showStatus('Silme işlemi draft\'a eklendi!', 'success');
                     }
                 }
             }
@@ -625,7 +725,11 @@
             if (category) {
                 const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
                 if (subcategory) {
+                    const newIndex = subcategory.items.length;
                     subcategory.items.push(newItem);
+                    
+                    // Draft değişikliğini kaydet
+                    addDraftChange('add', categoryId, subcategoryId, newIndex, newItem);
                 }
             }
 
@@ -636,12 +740,11 @@
             document.getElementById('new-item-category').value = '';
             document.getElementById('new-item-subcategory').innerHTML = '<option value="">Önce ana kategori seçin</option>';
 
-            saveMenuData();
             renderMenu();
-            showStatus('Yeni ürün başarıyla eklendi!', 'success');
+            showStatus('Yeni ürün draft\'a eklendi!', 'success');
         }
 
-        // Yeni ana kategori ekle
+        // Yeni ana kategori ekle (Draft modunda)
         function addNewCategory() {
             const name = document.getElementById('new-category-name').value;
             const icon = document.getElementById('new-category-icon').value;
@@ -664,18 +767,21 @@
                 ]
             };
 
+            const newIndex = menuData.categories.length;
             menuData.categories.push(newCategory);
+
+            // Draft değişikliğini kaydet
+            addDraftChange('add_category', null, null, newIndex, newCategory);
 
             // Formu temizle
             document.getElementById('new-category-name').value = '';
             document.getElementById('new-category-icon').value = '';
 
-            saveMenuData();
             renderMenu();
-            showStatus('Yeni ana kategori başarıyla eklendi!', 'success');
+            showStatus('Yeni ana kategori draft\'a eklendi!', 'success');
         }
 
-        // Yeni alt kategori ekle
+        // Yeni alt kategori ekle (Draft modunda)
         function addNewSubcategory() {
             const parentCategoryId = document.getElementById('parent-category-select').value;
             const name = document.getElementById('new-subcategory-name').value;
@@ -693,38 +799,55 @@
                     items: []
                 };
 
+                const newIndex = category.subcategories.length;
                 category.subcategories.push(newSubcategory);
+
+                // Draft değişikliğini kaydet
+                addDraftChange('add_subcategory', parentCategoryId, null, newIndex, newSubcategory);
             }
 
             // Formu temizle
             document.getElementById('parent-category-select').value = '';
             document.getElementById('new-subcategory-name').value = '';
 
-            saveMenuData();
             renderMenu();
-            showStatus('Yeni alt kategori başarıyla eklendi!', 'success');
+            showStatus('Yeni alt kategori draft\'a eklendi!', 'success');
         }
 
-        // Ana kategori sil
+        // Ana kategori sil (Draft modunda)
         function deleteCategory(categoryId) {
             if (confirm('Bu ana kategoriyi ve tüm alt kategorilerini silmek istediğinizden emin misiniz?')) {
-                menuData.categories = menuData.categories.filter(cat => cat.id !== categoryId);
-                saveMenuData();
-                renderMenu();
-                showStatus('Ana kategori başarıyla silindi!', 'success');
+                const category = menuData.categories.find(cat => cat.id === categoryId);
+                if (category) {
+                    const categoryIndex = menuData.categories.findIndex(cat => cat.id === categoryId);
+                    
+                    // Draft değişikliğini kaydet
+                    addDraftChange('delete_category', categoryId, null, categoryIndex, category);
+                    
+                    menuData.categories = menuData.categories.filter(cat => cat.id !== categoryId);
+                    renderMenu();
+                    showStatus('Ana kategori silme işlemi draft\'a eklendi!', 'success');
+                }
             }
         }
 
-        // Alt kategori sil
+        // Alt kategori sil (Draft modunda)
         function deleteSubcategory(categoryId, subcategoryId) {
             if (confirm('Bu alt kategoriyi ve tüm ürünlerini silmek istediğinizden emin misiniz?')) {
                 const category = menuData.categories.find(cat => cat.id === categoryId);
                 if (category) {
-                    category.subcategories = category.subcategories.filter(sub => sub.id !== subcategoryId);
+                    const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
+                    if (subcategory) {
+                        const subcategoryIndex = category.subcategories.findIndex(sub => sub.id === subcategoryId);
+                        
+                        // Draft değişikliğini kaydet
+                        addDraftChange('delete_subcategory', categoryId, subcategoryId, subcategoryIndex, subcategory);
+                        
+                        category.subcategories = category.subcategories.filter(sub => sub.id !== subcategoryId);
+                        renderMenu();
+                        showStatus('Alt kategori silme işlemi draft\'a eklendi!', 'success');
+                    }
                 }
-                saveMenuData();
-                renderMenu();
-                showStatus('Alt kategori başarıyla silindi!', 'success');
             }
         }
 
@@ -777,6 +900,154 @@
         // Loading göster/gizle
         function showLoading(show) {
             document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        // Draft değişikliği ekle
+        function addDraftChange(type, categoryId, subcategoryId, itemIndex, data) {
+            // Aynı değişiklik zaten var mı kontrol et
+            const existingIndex = draftChanges.findIndex(change => 
+                change.type === type && 
+                change.categoryId === categoryId && 
+                change.subcategoryId === subcategoryId && 
+                change.itemIndex === itemIndex
+            );
+            
+            if (existingIndex !== -1) {
+                // Mevcut değişikliği güncelle
+                draftChanges[existingIndex] = { type, categoryId, subcategoryId, itemIndex, data };
+            } else {
+                // Yeni değişiklik ekle
+                draftChanges.push({ type, categoryId, subcategoryId, itemIndex, data });
+            }
+            
+            updateDraftStatus();
+        }
+
+        // Draft durumunu güncelle
+        function updateDraftStatus() {
+            const draftStatus = document.getElementById('draft-status');
+            const draftCount = document.getElementById('draft-count');
+            
+            if (draftChanges.length > 0) {
+                draftStatus.style.display = 'block';
+                draftCount.textContent = draftChanges.length;
+            } else {
+                draftStatus.style.display = 'none';
+            }
+        }
+
+        // Değişiklikleri önizle
+        function previewChanges() {
+            if (draftChanges.length === 0) {
+                showStatus('Önizlenecek değişiklik yok!', 'warning');
+                return;
+            }
+            
+            let previewText = `📋 ${draftChanges.length} değişiklik önizlemesi:\n\n`;
+            
+            draftChanges.forEach((change, index) => {
+                previewText += `${index + 1}. `;
+                
+                switch (change.type) {
+                    case 'update':
+                        const category = menuData.categories.find(cat => cat.id === change.categoryId);
+                        const subcategory = category.subcategories.find(sub => sub.id === change.subcategoryId);
+                        previewText += `Güncelle: ${change.data.name} (${change.data.price}) - ${subcategory.name}\n`;
+                        break;
+                    case 'add':
+                        const addCategory = menuData.categories.find(cat => cat.id === change.categoryId);
+                        const addSubcategory = addCategory.subcategories.find(sub => sub.id === change.subcategoryId);
+                        previewText += `Ekle: ${change.data.name} (${change.data.price}) - ${addSubcategory.name}\n`;
+                        break;
+                    case 'delete':
+                        const delCategory = menuData.categories.find(cat => cat.id === change.categoryId);
+                        const delSubcategory = delCategory.subcategories.find(sub => sub.id === change.subcategoryId);
+                        previewText += `Sil: ${change.data.name} - ${delSubcategory.name}\n`;
+                        break;
+                    case 'add_category':
+                        previewText += `Yeni Ana Kategori: ${change.data.name}\n`;
+                        break;
+                    case 'add_subcategory':
+                        const parentCategory = menuData.categories.find(cat => cat.id === change.categoryId);
+                        previewText += `Yeni Alt Kategori: ${change.data.name} - ${parentCategory.name}\n`;
+                        break;
+                    case 'delete_category':
+                        previewText += `Ana Kategori Sil: ${change.data.name}\n`;
+                        break;
+                    case 'delete_subcategory':
+                        const parentDelCategory = menuData.categories.find(cat => cat.id === change.categoryId);
+                        previewText += `Alt Kategori Sil: ${change.data.name} - ${parentDelCategory.name}\n`;
+                        break;
+                }
+            });
+            
+            alert(previewText);
+        }
+
+        // Tüm değişiklikleri kaydet
+        async function saveAllChanges() {
+            if (draftChanges.length === 0) {
+                showStatus('Kaydedilecek değişiklik yok!', 'warning');
+                return;
+            }
+            
+            try {
+                showLoading(true);
+                
+                // GitHub token kontrolü
+                const token = localStorage.getItem('github_token');
+                if (!token) {
+                    showStatus('GitHub token bulunamadı! Lütfen ayarlardan token ekleyin.', 'error');
+                    showLoading(false);
+                    return;
+                }
+
+                // MenuUpdater sınıfını kullan
+                const result = await menuUpdater.saveMenuData();
+                
+                if (result.success) {
+                    // Draft'ları temizle
+                    draftChanges = [];
+                    originalMenuData = JSON.parse(JSON.stringify(menuData));
+                    updateDraftStatus();
+                    
+                    showStatus('Tüm değişiklikler başarıyla kaydedildi!', 'success');
+                    
+                    // 3 saniye sonra index.html'i yenile
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                } else {
+                    showStatus(result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Save error:', error);
+                showStatus('Güncelleme sırasında hata oluştu: ' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Değişiklikleri geri al
+        function discardChanges() {
+            if (draftChanges.length === 0) {
+                showStatus('Geri alınacak değişiklik yok!', 'warning');
+                return;
+            }
+            
+            if (confirm(`${draftChanges.length} değişikliği geri almak istediğinizden emin misiniz?`)) {
+                // Orijinal veriyi geri yükle
+                menuData = JSON.parse(JSON.stringify(originalMenuData));
+                
+                // Draft'ları temizle
+                draftChanges = [];
+                updateDraftStatus();
+                
+                // Menüyü yeniden render et
+                renderMenu();
+                
+                showStatus('Tüm değişiklikler geri alındı!', 'success');
+            }
         }
 
         // GitHub ayarlarını kaydet
