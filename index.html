@@ -320,7 +320,18 @@
                 renderMenu();
             } catch (error) {
                 console.error('Menü yüklenirken hata:', error);
-                showError('Menü yüklenirken hata oluştu! Lütfen sayfayı yenileyin.');
+                
+                // CORS hatası kontrolü
+                if (error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
+                    showError('CORS Hatası: Dosyaları yerel sunucu ile açmanız gerekiyor.<br><br>' +
+                        '<strong>Çözüm:</strong><br>' +
+                        '1. Terminal/PowerShell açın<br>' +
+                        '2. Proje klasörüne gidin<br>' +
+                        '3. <code>python -m http.server 8000</code> çalıştırın<br>' +
+                        '4. <a href="http://localhost:8000" target="_blank">http://localhost:8000</a> adresini açın');
+                } else {
+                    showError('Menü yüklenirken hata oluştu! Lütfen sayfayı yenileyin.');
+                }
             }
         }
 

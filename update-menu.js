@@ -178,18 +178,8 @@ class MenuUpdater {
     // Türkçe karakterler için güvenli base64 encoding
     encodeBase64(str) {
         try {
-            // Modern tarayıcılar için TextEncoder kullan
-            if (typeof TextEncoder !== 'undefined') {
-                const utf8Bytes = new TextEncoder().encode(str);
-                let binary = '';
-                for (let i = 0; i < utf8Bytes.length; i++) {
-                    binary += String.fromCharCode(utf8Bytes[i]);
-                }
-                return btoa(binary);
-            } else {
-                // Eski tarayıcılar için fallback
-                return btoa(unescape(encodeURIComponent(str)));
-            }
+            // En güvenli yöntem: encodeURIComponent + unescape + btoa
+            return btoa(unescape(encodeURIComponent(str)));
         } catch (error) {
             console.warn('Base64 encoding hatası, fallback kullanılıyor:', error);
             // Son çare: Türkçe karakterleri değiştir
