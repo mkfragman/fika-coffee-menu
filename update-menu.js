@@ -87,7 +87,9 @@ class MenuUpdater {
         const repoOwner = this.getRepoOwner();
         const repoName = this.getRepoName();
         
-        const content = btoa(JSON.stringify(this.menuData, null, 2));
+        // Türkçe karakterler için güvenli base64 encoding
+        const jsonString = JSON.stringify(this.menuData, null, 2);
+        const content = this.encodeBase64(jsonString);
         
         // Önce dosyanın SHA'sını al
         const fileResponse = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/menu-data.json`, {
@@ -126,7 +128,7 @@ class MenuUpdater {
         const repoName = this.getRepoName();
         
         const htmlContent = this.generateIndexHTML();
-        const content = btoa(htmlContent);
+        const content = this.encodeBase64(htmlContent);
         
         // Önce dosyanın SHA'sını al
         const fileResponse = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/index.html`, {
@@ -171,6 +173,41 @@ class MenuUpdater {
 
     getRepoName() {
         return localStorage.getItem('repo_name') || 'repo-adi';
+    }
+
+    // Türkçe karakterler için güvenli base64 encoding
+    encodeBase64(str) {
+        try {
+            // Modern tarayıcılar için TextEncoder kullan
+            if (typeof TextEncoder !== 'undefined') {
+                const utf8Bytes = new TextEncoder().encode(str);
+                let binary = '';
+                for (let i = 0; i < utf8Bytes.length; i++) {
+                    binary += String.fromCharCode(utf8Bytes[i]);
+                }
+                return btoa(binary);
+            } else {
+                // Eski tarayıcılar için fallback
+                return btoa(unescape(encodeURIComponent(str)));
+            }
+        } catch (error) {
+            console.warn('Base64 encoding hatası, fallback kullanılıyor:', error);
+            // Son çare: Türkçe karakterleri değiştir
+            const safeStr = str
+                .replace(/ç/g, 'c')
+                .replace(/ğ/g, 'g')
+                .replace(/ı/g, 'i')
+                .replace(/ö/g, 'o')
+                .replace(/ş/g, 's')
+                .replace(/ü/g, 'u')
+                .replace(/Ç/g, 'C')
+                .replace(/Ğ/g, 'G')
+                .replace(/İ/g, 'I')
+                .replace(/Ö/g, 'O')
+                .replace(/Ş/g, 'S')
+                .replace(/Ü/g, 'U');
+            return btoa(safeStr);
+        }
     }
 
     // index.html içeriğini oluştur

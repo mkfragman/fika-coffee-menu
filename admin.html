@@ -722,6 +722,7 @@
                     showStatus(result.message, 'error');
                 }
             } catch (error) {
+                console.error('Save error:', error);
                 showStatus('Güncelleme sırasında hata oluştu: ' + error.message, 'error');
             } finally {
                 showLoading(false);
