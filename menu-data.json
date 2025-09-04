@@ -326,6 +326,11 @@
               "price": "230₺"
             }
           ]
+        },
+        {
+          "id": "special",
+          "name": "Special",
+          "items": []
         }
       ]
     },
