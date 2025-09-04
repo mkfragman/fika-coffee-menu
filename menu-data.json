@@ -10,8 +10,12 @@
           "name": "Soğuk İçecekler",
           "items": [
             {
-              "name": "asd",
-              "price": "987₺"
+              "name": "oralet",
+              "price": "125₺"
+            },
+            {
+              "name": "Ice Raspberry Latte",
+              "price": "331₺"
             },
             {
               "name": "Ice Caramel Macchiato",
@@ -261,8 +265,8 @@
           "name": "Tatlılar",
           "items": [
             {
-              "name": "Pavlova",
-              "price": "185₺"
+              "name": "asd",
+              "price": "999₺"
             },
             {
               "name": "Ada LOVE",
@@ -311,6 +315,10 @@
             {
               "name": "Roll Kruvasan",
               "price": "230₺"
+            },
+            {
+              "name": "Tulumba",
+              "price": "111"
             }
           ]
         }
@@ -348,8 +356,8 @@
           ]
         },
         {
-          "id": "gurmeler",
-          "name": "gurmeler",
+          "id": "tuborg",
+          "name": "Tuborg",
           "items": []
         }
       ]
