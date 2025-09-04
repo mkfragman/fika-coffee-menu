@@ -10,6 +10,10 @@
           "name": "Soğuk İçecekler",
           "items": [
             {
+              "name": "Ice Latte",
+              "price": "125₺"
+            },
+            {
               "name": "Ice Raspberry Latte",
               "price": "135₺"
             },
@@ -44,6 +48,11 @@
             {
               "name": "Frappucino",
               "price": "140₺"
+            },
+            {
+              "name": "asd",
+              "price": "123",
+              "description": "qwe"
             }
           ]
         },
