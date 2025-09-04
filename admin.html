@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fika Coffee - Menü Yönetimi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #c4390e 0%, #c4390e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header:hover {
+            background: #e9ecef;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #c4390e;
+        }
+
+        .section-arrow {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .section-arrow.rotated {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .section-content.open {
+            max-height: 2000px;
+        }
+
+        .items-container {
+            padding: 20px;
+        }
+
+        .item-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #c4390e;
+        }
+
+        .item-name {
+            flex: 1;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .item-price {
+            width: 100px;
+        }
+
+        .item-description {
+            flex: 1;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #c4390e;
+            box-shadow: 0 0 5px rgba(196, 57, 14, 0.3);
+        }
+
+        .btn {
+            background: #c4390e;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #a52f0b;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        .add-item-form {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px dashed #28a745;
+        }
+
+        .add-item-form h4 {
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #c4390e;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #c4390e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☕ Fika Coffee</h1>
+            <p>Menü Yönetim Paneli</p>
+        </div>
+
+        <div class="content">
+            <a href="index.html" class="back-link">← Ana Menüye Dön</a>
+            
+            <div id="status-message"></div>
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Güncelleniyor...</p>
+            </div>
+
+            <!-- İçecekler Bölümü -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3 class="section-title">☕ İçecekler</h3>
+                    <span class="section-arrow">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="items-container">
+                        <!-- Soğuk İçecekler -->
+                        <h4 style="color: #c4390e; margin-bottom: 15px;">🧊 Soğuk İçecekler</h4>
+                        <div id="soguk-icecekler"></div>
+                        
+                        <!-- Sıcak İçecekler -->
+                        <h4 style="color: #c4390e; margin-bottom: 15px;">🔥 Sıcak İçecekler</h4>
+                        <div id="sicak-icecekler"></div>
+                        
+                        <!-- Sıcak Special -->
+                        <h4 style="color: #c4390e; margin-bottom: 15px;">⭐ Sıcak Special İçecekler</h4>
+                        <div id="sicak-special-icecekler"></div>
+                        
+                        <!-- Soğuk Special -->
+                        <h4 style="color: #c4390e; margin-bottom: 15px;">❄️ Soğuk Special İçecekler</h4>
+                        <div id="soguk-special-icecekler"></div>
+                        
+                        <!-- Bitki Çayları -->
+                        <h4 style="color: #c4390e; margin-bottom: 15px;">🍃 Bitki Çayları</h4>
+                        <div id="bitki-caylari"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tatlılar Bölümü -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3 class="section-title">🍰 Tatlılar</h3>
+                    <span class="section-arrow">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="items-container">
+                        <div id="tatlilar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extralar Bölümü -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3 class="section-title">➕ Extralar</h3>
+                    <span class="section-arrow">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="items-container">
+                        <div id="extralar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GitHub Ayarları -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3 class="section-title">⚙️ GitHub Ayarları</h3>
+                    <span class="section-arrow">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="items-container">
+                        <div class="add-item-form">
+                            <h4>GitHub Bağlantı Bilgileri</h4>
+                            <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                                <strong>🔒 Güvenlik Bilgisi:</strong><br>
+                                • Token sadece sizin tarayıcınızda saklanır<br>
+                                • Public repo yapabilirsiniz, güvenlidir<br>
+                                • Başkaları token'ınızı göremez<br>
+                                • Sadece siz menüyü güncelleyebilirsiniz
+                            </div>
+                            <div class="form-group">
+                                <label>GitHub Token:</label>
+                                <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                                <small style="color: #666; font-size: 12px;">
+                                    ⚠️ Bu token sadece sizin tarayıcınızda saklanır. Public repo güvenlidir!
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label>Repo Owner (Kullanıcı Adı):</label>
+                                <input type="text" id="repo-owner" placeholder="kullaniciadi">
+                            </div>
+                            <div class="form-group">
+                                <label>Repo Name:</label>
+                                <input type="text" id="repo-name" placeholder="repo-adi">
+                            </div>
+                            <button class="btn" onclick="saveGitHubSettings()">Ayarları Kaydet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yeni Ürün Ekleme -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3 class="section-title">➕ Yeni Ürün Ekle</h3>
+                    <span class="section-arrow">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="items-container">
+                        <div class="add-item-form">
+                            <h4>Yeni Ürün Bilgileri</h4>
+                            <div class="form-group">
+                                <label>Ürün Adı:</label>
+                                <input type="text" id="new-item-name" placeholder="Örn: Ice Latte">
+                            </div>
+                            <div class="form-group">
+                                <label>Fiyat:</label>
+                                <input type="text" id="new-item-price" placeholder="Örn: 125₺">
+                            </div>
+                            <div class="form-group">
+                                <label>Açıklama (Opsiyonel):</label>
+                                <input type="text" id="new-item-description" placeholder="Örn: Çikolata-Çilek-Karadut">
+                            </div>
+                            <div class="form-group">
+                                <label>Kategori:</label>
+                                <select id="new-item-category">
+                                    <option value="soguk">Soğuk İçecekler</option>
+                                    <option value="sicak">Sıcak İçecekler</option>
+                                    <option value="sicak_special">Sıcak Special İçecekler</option>
+                                    <option value="soguk_special">Soğuk Special İçecekler</option>
+                                    <option value="bitki_caylari">Bitki Çayları</option>
+                                    <option value="tatlilar">Tatlılar</option>
+                                    <option value="extralar">Extralar</option>
+                                </select>
+                            </div>
+                            <button class="btn" onclick="addNewItem()">Ürün Ekle</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="update-menu.js"></script>
+    <script>
+        let menuData = {};
+
+        // Sayfa yüklendiğinde menü verilerini yükle
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMenuData();
+            loadGitHubSettings();
+        });
+
+        // Menü verilerini yükle
+        async function loadMenuData() {
+            try {
+                const response = await fetch('menu-data.json');
+                menuData = await response.json();
+                renderMenu();
+            } catch (error) {
+                showStatus('Menü verileri yüklenirken hata oluştu!', 'error');
+            }
+        }
+
+        // Menüyü ekranda göster
+        function renderMenu() {
+            // İçecekler
+            renderItems('soguk-icecekler', menuData.icecekler.soguk, 'soguk');
+            renderItems('sicak-icecekler', menuData.icecekler.sicak, 'sicak');
+            renderItems('sicak-special-icecekler', menuData.icecekler.sicak_special, 'sicak_special');
+            renderItems('soguk-special-icecekler', menuData.icecekler.soguk_special, 'soguk_special');
+            renderItems('bitki-caylari', menuData.icecekler.bitki_caylari, 'bitki_caylari');
+            
+            // Tatlılar
+            renderItems('tatlilar', menuData.tatlilar, 'tatlilar');
+            
+            // Extralar
+            renderItems('extralar', menuData.extralar, 'extralar');
+        }
+
+        // Ürünleri render et
+        function renderItems(containerId, items, category) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            items.forEach((item, index) => {
+                const itemRow = document.createElement('div');
+                itemRow.className = 'item-row';
+                itemRow.innerHTML = `
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-price">
+                        <input type="text" value="${item.price}" 
+                               onchange="updatePrice('${category}', ${index}, this.value)"
+                               style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">
+                    </div>
+                    <div class="item-description">
+                        ${item.description ? `<input type="text" value="${item.description}" 
+                               onchange="updateDescription('${category}', ${index}, this.value)"
+                               style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">` : ''}
+                    </div>
+                    <button class="btn btn-danger" onclick="removeItem('${category}', ${index})">Sil</button>
+                `;
+                container.appendChild(itemRow);
+            });
+        }
+
+        // Fiyat güncelle
+        function updatePrice(category, index, newPrice) {
+            if (category === 'tatlilar' || category === 'extralar') {
+                menuData[category][index].price = newPrice;
+            } else {
+                menuData.icecekler[category][index].price = newPrice;
+            }
+            saveMenuData();
+        }
+
+        // Açıklama güncelle
+        function updateDescription(category, index, newDescription) {
+            if (category === 'tatlilar' || category === 'extralar') {
+                menuData[category][index].description = newDescription;
+            } else {
+                menuData.icecekler[category][index].description = newDescription;
+            }
+            saveMenuData();
+        }
+
+        // Ürün sil
+        function removeItem(category, index) {
+            if (confirm('Bu ürünü silmek istediğinizden emin misiniz?')) {
+                if (category === 'tatlilar' || category === 'extralar') {
+                    menuData[category].splice(index, 1);
+                } else {
+                    menuData.icecekler[category].splice(index, 1);
+                }
+                saveMenuData();
+                renderMenu();
+            }
+        }
+
+        // Yeni ürün ekle
+        function addNewItem() {
+            const name = document.getElementById('new-item-name').value;
+            const price = document.getElementById('new-item-price').value;
+            const description = document.getElementById('new-item-description').value;
+            const category = document.getElementById('new-item-category').value;
+
+            if (!name || !price) {
+                showStatus('Ürün adı ve fiyat alanları zorunludur!', 'error');
+                return;
+            }
+
+            const newItem = { name, price };
+            if (description) {
+                newItem.description = description;
+            }
+
+            if (category === 'tatlilar' || category === 'extralar') {
+                menuData[category].push(newItem);
+            } else {
+                menuData.icecekler[category].push(newItem);
+            }
+
+            // Formu temizle
+            document.getElementById('new-item-name').value = '';
+            document.getElementById('new-item-price').value = '';
+            document.getElementById('new-item-description').value = '';
+
+            saveMenuData();
+            renderMenu();
+            showStatus('Yeni ürün başarıyla eklendi!', 'success');
+        }
+
+        // Menü verilerini kaydet
+        async function saveMenuData() {
+            try {
+                showLoading(true);
+                
+                // GitHub token kontrolü
+                const token = localStorage.getItem('github_token');
+                if (!token) {
+                    showStatus('GitHub token bulunamadı! Lütfen ayarlardan token ekleyin.', 'error');
+                    showLoading(false);
+                    return;
+                }
+
+                // MenuUpdater sınıfını kullan
+                const result = await menuUpdater.saveMenuData();
+                
+                if (result.success) {
+                    showStatus('Menü başarıyla güncellendi!', 'success');
+                    // 3 saniye sonra index.html'i yenile
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                } else {
+                    showStatus(result.message, 'error');
+                }
+            } catch (error) {
+                showStatus('Güncelleme sırasında hata oluştu: ' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Bölüm aç/kapat
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('.section-arrow');
+            
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                arrow.classList.remove('rotated');
+            } else {
+                content.classList.add('open');
+                arrow.classList.add('rotated');
+            }
+        }
+
+        // Durum mesajı göster
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status-message');
+            statusDiv.className = `status-message status-${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Loading göster/gizle
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        // GitHub ayarlarını kaydet
+        function saveGitHubSettings() {
+            const token = document.getElementById('github-token').value;
+            const repoOwner = document.getElementById('repo-owner').value;
+            const repoName = document.getElementById('repo-name').value;
+
+            if (!token || !repoOwner || !repoName) {
+                showStatus('Tüm alanları doldurun!', 'error');
+                return;
+            }
+
+            localStorage.setItem('github_token', token);
+            localStorage.setItem('repo_owner', repoOwner);
+            localStorage.setItem('repo_name', repoName);
+
+            showStatus('GitHub ayarları kaydedildi!', 'success');
+        }
+
+        // Sayfa yüklendiğinde ayarları yükle
+        function loadGitHubSettings() {
+            const token = localStorage.getItem('github_token');
+            const repoOwner = localStorage.getItem('repo_owner');
+            const repoName = localStorage.getItem('repo_name');
+
+            if (token) document.getElementById('github-token').value = token;
+            if (repoOwner) document.getElementById('repo-owner').value = repoOwner;
+            if (repoName) document.getElementById('repo-name').value = repoName;
+        }
+    </script>
+</body>
+</html>
